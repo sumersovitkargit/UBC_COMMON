@@ -20,7 +20,6 @@ jobs:
         with:
           repository: sumersovitkargit/UBS_JAVA
           ref: main
-          path: java-repo
       
 
       - name: Build Java Docker image
@@ -38,6 +37,12 @@ jobs:
         with:
           repository: sumersovitkargit/UBS_PYTHON
           ref: main
+
+      - name: Build python Docker image
+        run: |
+         
+          docker build -t python-image:${{ github.sha }} .
+          docker tag python-image:${{ github.sha }} pyhon-image:latest
           
           
 
