@@ -1,46 +1,28 @@
-
-name: build Pipeline
+name: Shared Build
 
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       environment-name:
-        description: 'Choose environment'
         required: true
-        type: choice
-        options: [java, python]
+        type: string
+      stage:
+        required: true
+        type: string
 
 jobs:
-  build-java:
-    if: ${{ github.event.inputs.environment-name == 'java' }}
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout UBS_JAVA repo
+      - name: Checkout calling repo
         uses: actions/checkout@v3
-        with:
-          repository: sumersovitkargit/UBS_JAVA
-          ref: main
-      
 
-      - name: Build Java Docker image
+      - name: Display environment details
         run: |
-         
-          docker build -t java-image:${{ github.sha }} .
-          docker tag java-image:${{ github.sha }} java-image:latest
+          echo "Building for environment: ${{ inputs.environment-name }}"
+          echo "Deployment stage: ${{ inputs.stage }}"
 
-  build-python:
-    if: ${{ github.event.inputs.environment-name == 'python' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout UBS_PYTHON repo
-        uses: actions/checkout@v3
-        with:
-          repository: sumersovitkargit/UBS_PYTHON
-          ref: main
-
-      - name: Build python Docker image
+      - name: Build Docker image
         run: |
-         
-          docker build -t python-image:${{ github.sha }} .
-          docker tag python-image:${{ github.sha }} pyhon-image:latest
-          
+          docker build -t ${{ inputs.environment-name }}-${{ inputs.stage }}:${{ github.sha }} .
+          docker tag ${{ inputs.environment-name }}-${{ inputs.stage }}:${{ github.sha }} ${{ inputs.environment-name }}-${{ inputs.stage }}:latest
