@@ -1,3 +1,4 @@
+
 name: CI/CD Pipeline
 
 on:
@@ -18,7 +19,9 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: sumersovitkargit/UBS_JAVA
+          ref: main
           path: java-repo
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
       - name: Build Java Docker image
         run: |
@@ -34,7 +37,9 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: sumersovitkargit/UBS_PYTHON
+          ref: main
           path: python-repo
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
       - name: Build Python Docker image
         run: |
