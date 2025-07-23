@@ -44,10 +44,3 @@ jobs:
           docker build -t python-image:${{ github.sha }} .
           docker tag python-image:${{ github.sha }} pyhon-image:latest
           
-          
-
-      - name: Build Python Docker image
-        run: |
-          cd python-repo
-          docker build -t python-image:${{ github.sha }} .
-          docker tag python-image:${{ github.sha }} python-image:latest
