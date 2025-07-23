@@ -5,8 +5,8 @@ on:
     inputs:
       environment-name:
         description: 'Choose environment'
-        type: choice
         required: true
+        type: choice
         options: [java, python]
 
 jobs:
@@ -14,38 +14,30 @@ jobs:
     if: ${{ github.event.inputs.environment-name == 'java' }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Java repo
+      - name: Checkout UBS_JAVA repo
         uses: actions/checkout@v3
         with:
-          path: UBS_JAVA
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+          repository: sumersovitkargit/UBS_JAVA
+          path: java-repo
 
       - name: Build Java Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./UBS_JAVA
-          file: ./UBS_JAVA/Dockerfile
-          push: false
-          tags: java-image:latest
+        run: |
+          cd java-repo
+          docker build -t java-image:${{ github.sha }} .
+          docker tag java-image:${{ github.sha }} java-image:latest
 
   build-python:
     if: ${{ github.event.inputs.environment-name == 'python' }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Python repo
+      - name: Checkout UBS_PYTHON repo
         uses: actions/checkout@v3
         with:
-          path: UBS_Python
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+          repository: sumersovitkargit/UBS_PYTHON
+          path: python-repo
 
       - name: Build Python Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./UBS_Python
-          file: ./UBS_Python/Dockerfile
-          push: false
-          tags: python-image:latest
+        run: |
+          cd python-repo
+          docker build -t python-image:${{ github.sha }} .
+          docker tag python-image:${{ github.sha }} python-image:latest
