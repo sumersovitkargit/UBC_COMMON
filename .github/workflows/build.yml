@@ -21,11 +21,11 @@ jobs:
           repository: sumersovitkargit/UBS_JAVA
           ref: main
           path: java-repo
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+      
 
       - name: Build Java Docker image
         run: |
-          cd java-repo
+         
           docker build -t java-image:${{ github.sha }} .
           docker tag java-image:${{ github.sha }} java-image:latest
 
@@ -38,8 +38,8 @@ jobs:
         with:
           repository: sumersovitkargit/UBS_PYTHON
           ref: main
-          path: python-repo
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          
+          
 
       - name: Build Python Docker image
         run: |
